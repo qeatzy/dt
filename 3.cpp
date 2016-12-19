@@ -14,7 +14,7 @@ using std::cout;
 
 bool is_prime(long long val) {
     long long ulimit = sqrt(val);
-    for(long long i=2; i<ulimit; ++i) {
+    for(long long i=2; i<=ulimit; ++i) {
         if (val % i == 0)
             return false;
     }

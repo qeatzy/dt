@@ -3,7 +3,7 @@ from math import sqrt
 
 def is_prime(val):
     # val is prime iff (val%x != 0) for x in range(2,sqrt(val)).
-    for i in range(2, int(sqrt(val))):
+    for i in range(2, 1 + int(sqrt(val))):
         if val % i == 0:
             return False
     return True
