@@ -1,6 +1,16 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <numeric>
+#include <cmath>
+#include <utility>
+#include <valarray>
+
 typedef std::vector<int> iVec;
 
 using std::cout;
+using std::cin;
 
 template <typename T>
 void print(std::vector<T> vec) {
@@ -35,12 +45,11 @@ iVec range(int start, int stop) {
 // int debug_num = 0;
 class Prime {
     public:
-        Prime() {
-            this->primes = iVec {2,3,5,7,11};
-            this->threshold = 11;
-        }
-        Prime(int threshold) {
-            Prime();
+        Prime()
+            : primes {2,3,5,7,11},
+            threshold {11}
+        { }
+        Prime(int threshold) : Prime() {
             if (threshold > this->threshold)
                 this->update(threshold);
         }
@@ -51,29 +60,37 @@ class Prime {
             // TODO(efficiency): is this copy approach good enough, could a non-writable view be returned instead?
             return iVec(primes.begin(), std::upper_bound(primes.begin(), primes.end(), threshold));
         }
+        int nth_prime(int n) {
+            auto threshold = n;
+            while ((size_t)n > primes.size()) {
+                if (threshold > this->threshold) {
+                    this->update(threshold);
+                }
+                else {
+                    threshold *= 2;
+                    // cout << "will update. current size is " << primes.size() << ", threshold is " << threshold << '\n';
+                }
+            }
+            // printf("primes.size() = %zu\n", primes.size());
+            return primes[n-1];
+        }
+        const iVec getall() { return this->primes; }
         iVec::const_iterator get_pos(int threshold) {
+            cout << "this->threshold = " << this->threshold << ", threshold = " << threshold << ", primes.size() = " << primes.size() << '\n';
             if (threshold > this->threshold) {
                 this->update(threshold);
             }
             return std::upper_bound(primes.cbegin(), primes.cend(), threshold);
         }
-        int nth_prime(int n) {
-            auto threshold = n;
-            while (n > primes.size()) {
-                if (threshold < this->threshold) {}
-                threshold *= 3;
-                // cout << "will update. current size is " << primes.size() << ", threshold is " << threshold << '\n';
-                this->update(threshold);
-            }
-            // printf("primes.size() = %zu\n", primes.size());
-            return primes[n-1];
-        }
-        iVec getall() { return this->primes; }
     private:
         iVec primes;
         int threshold;
         void update(int threshold) {
-            this->primes.reserve(1.25506 * threshold / log(threshold) );
+            if (primes.capacity() < (size_t) threshold) {
+                this->primes.reserve(1.25506 * threshold / log(threshold) );
+                printf("reserve size %f\n", 1.25506 * threshold / log(threshold) );
+            }
+            // cin.get();
             // printf("debug_num = %d\n", ++debug_num);
             auto pos = this->get_pos(sqrt(threshold));
             // cout << "threshold = " << threshold << ", pos is nth: " << pos - primes.cbegin() << '\n';
@@ -84,12 +101,14 @@ class Prime {
                 }
                 return true;
             };
-            auto candidate = this->threshold + (this->threshold + 1) % 2;
+            auto candidate = 1 + this->threshold;
+            candidate += (candidate + 1) % 2;
             for(; candidate <= threshold; candidate += 2) {
                 if (is_prime(candidate))
                     this->primes.push_back(candidate);
             }
             this->threshold = threshold;
+            cout << "this->threshold = " << this->threshold << ", threshold = " << threshold << ", primes.size() = " << primes.size() << '\n';
         }
 };
 

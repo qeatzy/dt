@@ -9,7 +9,7 @@ VPATH = $(SRCDIR)
 
 # Normal makefile rules here
 CXX=g++
-CXXFLAGS=-g -std=c++11 -Wall -pedantic
+CXXFLAGS=-g -std=c++11 -fext-numeric-literals -Wall -pedantic
 %: %.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
