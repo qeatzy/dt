@@ -3,14 +3,20 @@
 #include <string>
 #include <algorithm>
 #include <numeric>
-#include <cmath>
+#include <cmath>    // pow
 #include <utility>
 #include <valarray>
+#include <climits>
+#include <cstdlib>  // strtoul, strtoull, strtol
 
 typedef std::vector<int> iVec;
+typedef std::vector<long long> llVec;
+typedef std::vector<std::string> sVec;
+typedef long long llong;
 
 using std::cout;
 using std::cin;
+using std::string;
 
 template <typename T>
 void print(std::vector<T> vec) {
