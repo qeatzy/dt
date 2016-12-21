@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cstring>  // strlen, string literal of type const char [].
 #include <algorithm>
 #include <numeric>
 #include <cmath>    // pow
@@ -18,11 +19,15 @@ using std::cout;
 using std::cin;
 using std::string;
 
+void wait() {
+    char c; cin.get(c); if (c=='q') exit(1);
+}
+
 template <typename T>
 void print(std::vector<T> vec) {
     // for(T x: vec) { std::cout << x << ' '; }
     for(auto it = vec.begin(); it != vec.end(); ++it) { std::cout << *it << ' '; }
-    std::cout << std::endl;
+    std::cout << '\n';
 }
 
 iVec range(int start, int stop, int step) {
