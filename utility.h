@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
 #include <cstring>  // strlen, string literal of type const char [].
@@ -9,6 +10,8 @@
 #include <valarray>
 #include <climits>
 #include <cstdlib>  // strtoul, strtoull, strtol
+#include <ctime>
+#include <chrono>
 
 typedef std::vector<int> iVec;
 typedef std::vector<long long> llVec;
@@ -18,16 +21,23 @@ typedef long long llong;
 using std::cout;
 using std::cin;
 using std::string;
+using std::vector;
 
 void wait() {
     char c; cin.get(c); if (c=='q') exit(1);
 }
 
 template <typename T>
-void print(std::vector<T> vec) {
-    // for(T x: vec) { std::cout << x << ' '; }
-    for(auto it = vec.begin(); it != vec.end(); ++it) { std::cout << *it << ' '; }
+void print(const std::vector<T> & vec) {
+    // for(auto it = vec.begin(); it != vec.end(); ++it) { std::cout << *it << ' '; }
+    for(T x: vec) { std::cout << x << ' '; }
     std::cout << '\n';
+}
+
+template <>     // template specialization, note the <> is needed.
+void print<int>(const std::vector<int> & vec) {
+    for(auto x: vec) { printf("%d ", x); }
+    putchar('\n');
 }
 
 iVec range(int start, int stop, int step) {
