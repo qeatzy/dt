@@ -1,43 +1,103 @@
+#ifndef UTILITY_H_INCLUDED   // include guard, http://www.cplusplus.com/forum/articles/10627/#msg49679
+#define UTILITY_H_INCLUDED 
+
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <vector>
+#include <deque>
 #include <string>
 #include <cstring>  // strlen, string literal of type const char [].
 #include <algorithm>
 #include <numeric>
 #include <cmath>    // pow
-#include <utility>
 #include <valarray>
+#include <array>
+#include <utility>
+#include <stdexcept>
+#include <cassert>  // assert
 #include <climits>
 #include <cstdlib>  // strtoul, strtoull, strtol
+#include <cctype>   // isspace
 #include <ctime>
 #include <chrono>
 
 typedef std::vector<int> iVec;
 typedef std::vector<long long> llVec;
+typedef std::vector<double> dVec;
 typedef std::vector<std::string> sVec;
 typedef long long llong;
 
+using std::cerr;
 using std::cout;
 using std::cin;
+using std::ios;
+using std::ios_base;
+char endl = '\n';
 using std::string;
 using std::vector;
+using std::array;
 
 void wait() {
     char c; cin.get(c); if (c=='q') exit(1);
 }
-
-template <typename T>
-void print(const std::vector<T> & vec) {
-    // for(auto it = vec.begin(); it != vec.end(); ++it) { std::cout << *it << ' '; }
-    for(T x: vec) { std::cout << x << ' '; }
-    std::cout << '\n';
+void wait(string s) {
+    cout << s << ' ';
+    char c; cin.get(c); if (c=='q') exit(1);
 }
 
+inline bool isneg(int x) { return x < 0; }
+inline int sgn(int x) { return (x>0) - (x<0); }
+// template <typename T> int sgn(T val) {  // http://stackoverflow.com/a/4609795/3625404
+//     return (T(0) < val) - (val < T(0));
+// }
+
+template <typename T>
+void print(const std::vector<T> &vec, char sep=' ') {
+    if (sep == ' ' || sep == '\n' || sep == '\t') {
+        // for(auto it = vec.begin(); it != vec.end(); ++it) { std::cout << *it << ' '; }
+        for(const T &x: vec) { std::cout << x << sep; }
+        std::cout << '\n';
+    } else if (sep == 'q') {
+        for (const T &x: vec) {
+            std::cout << x;
+            char c;
+            std::cin.get(c);
+            if (c == 'q') {
+                break;
+            }
+        }
+    } else {
+        auto it_end = (vec.size() > (size_t) sep)? vec.begin() + sep : vec.end();
+        for (auto it = vec.begin(); it != it_end; ++it) {
+            std::cout << *it << ' ';
+        }
+    }
+}
+
+/**
 template <>     // template specialization, note the <> is needed.
-void print<int>(const std::vector<int> & vec) {
-    for(auto x: vec) { printf("%d ", x); }
+void print<double>(const std::vector<double> & vec) {
+    for(auto x: vec) {
+        // printf("%8.4f ", x);
+        cout << x << ' ';
+    }
+    // for(auto x: vec) { printf("%6.2f ", x); }
     putchar('\n');
+}
+*/
+
+void print(const int *p, int n) {
+    for (auto i = 0; i < n; ++i) printf("%9d, ", p[i]); putchar('\n');
+}
+
+void print(const int *p, const int *pend) {
+    for (; p < pend; ++p) printf("%9d, ", *p); putchar('\n');
+}
+
+template <typename T>
+void print(const vector<vector<T>> &mat) {
+    for (auto &vec: mat) print(vec);
 }
 
 iVec range(int start, int stop, int step) {
@@ -62,6 +122,30 @@ iVec range(int start) {
 iVec range(int start, int stop) {
     return range(start, stop, 1);
 }
+
+// dVec range(double start, double stop, double step) {
+//     dVec vec;
+//     if (step == 0) {
+//         throw std::runtime_error("step must be non-zero.");
+//     } else if (step > 0) {
+//         while (start < stop) {
+//             vec.push_back(start);
+//             start += step;
+//         }
+//     } else {
+//         while (start > stop) {
+//             vec.push_back(start);
+//             start += step;
+//         }
+//     }
+//     return vec;
+// }
+// std::vector<double> range(double start, double stop) {
+//     return range(start, stop, 1);
+// }
+// std::vector<double> range(double stop) {
+//     return range(0, stop, 1);
+// }
 
 // int debug_num = 0;
 class Prime {
@@ -132,4 +216,14 @@ class Prime {
             cout << "this->threshold = " << this->threshold << ", threshold = " << threshold << ", primes.size() = " << primes.size() << '\n';
         }
 };
+
+#endif
+// below are vocabulary that aid vim completion.
+// extensibility
+/**
+    out_of_range  overflow_error
+    throw std::invalid_argument( "received negative value" );
+    catch(const std::invalid_argument& e) {   // And you should always catch exceptions as const? comment in http://stackoverflow.com/a/8480675/3625404
+**/
+
 
