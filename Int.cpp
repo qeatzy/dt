@@ -35,6 +35,7 @@ class Int {
 
     const vector<ValType> & data() const { return this->value; }
     size_t dlen() const { return this->value.size(); }
+    size_t ndigits() const { return (9 * (this->value.size() - 1) + std::to_string(value[0]).size()); }
     int cmp_abs(const Int& obj) const;
     int compare_(const Int& obj) const { return this->cmp_abs(obj) * this->sign() * obj.sign(); }
     Int pow(int exponent);
@@ -681,42 +682,42 @@ bool operator!=(const Int& lhs, const Int& rhs) { return lhs.compare_(rhs) != 0;
 bool operator>(const Int& lhs, const Int& rhs) { return lhs.compare_(rhs) > 0; }
 bool operator>=(const Int& lhs, const Int& rhs) { return lhs.compare_(rhs) >= 0; }
 
-int main() {
-    // TODO change to a static method of Int, then just call Int::main() to test. and make this file header only.
-    cout << std::boolalpha;
-    auto a = Int(), b = Int(-2123456789), c = Int("-999999999549123491234912349123491234912349123491234912349123499994912349"), d=c;
-    cout << "c = " << c;
-    // cout << a << b << c << d << c+d << (c*d) * (c*d);
-    // cout << a << b << c << c*c;
-    // cout << a-b << b-a;
-    // auto tmp = Int::pow(2,42*29);
-    // auto tmp = Int::pow(2,21*29);
-    // auto tmp = Int("2124551971267068394758352826209874509318372470908127692797776552801614239443408970956650009060917142675557317944986004061386317350610828957638079915066349407775325083341572876126912512"); // 2**(21*29)
-    // cout << " tmp: " << tmp;
-    // tmp *= tmp;
-    // cout << " tmp: " << tmp;
-    // auto f42 = Int("4513721078614786210022654658754022076207575792470901370842837631998555767764876163651334186529206088049982418198714538469250807179723842787735400581098036879598420878073788073478633526793353330401336902135069154012389883318957655774958078857324256712388820015707438180916154489315708470767711885060380524427604580826158560154020090008127121505888111464555809702150144"); // 2**(42*29)
-    // cout << " f42: " << f42;
-    // cout << "\ntmp.cmp_abs(f42) = " << tmp.cmp_abs(f42) << '\n';
-    // auto diff = f42 - f42;
-    // cout << diff;
-    // cout << (a == diff) << (a < diff) << (a > diff);
-    // cout << Int::pow(2,10000);
-    // tmp = 2**(29*21) is right, whereas tmp * tmp get wrong
-    // auto f = [](int base, int exponent) { cout << std::pow(base, exponent) << '\n'; };
-    // f(2,10);
-    // f(2,100000);
-    // f(INT_MAX, INT_MAX);
-    auto start = std::chrono::high_resolution_clock::now();
-    auto tmp = Int::pow(11,1000000);
-    // auto tmp = Int("2423285551989543969259886147306320615721694717012975552426444448158985017722789267546553034738712987127346362442309271495645764807314487385596126924659433020959638410571315406303196994043324038030803068668509323897700215957022383545283810557899591580902307500436706661372076856211818662627186819885605667216486349283517459646495626188985295134800963771933733229691796170211328");
-    // cout << " tmp: " << tmp;
-    // tmp *= tmp;
-    cout << " tmp: " << tmp;
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> diff = end-start;
-    std::cout << diff.count() << " s\n";
-}
+// int main() {
+//     // TODO change to a static method of Int, then just call Int::main() to test. and make this file header only.
+//     cout << std::boolalpha;
+//     auto a = Int(), b = Int(-2123456789), c = Int("-999999999549123491234912349123491234912349123491234912349123499994912349"), d=c;
+//     cout << "c = " << c;
+//     // cout << a << b << c << d << c+d << (c*d) * (c*d);
+//     // cout << a << b << c << c*c;
+//     // cout << a-b << b-a;
+//     // auto tmp = Int::pow(2,42*29);
+//     // auto tmp = Int::pow(2,21*29);
+//     // auto tmp = Int("2124551971267068394758352826209874509318372470908127692797776552801614239443408970956650009060917142675557317944986004061386317350610828957638079915066349407775325083341572876126912512"); // 2**(21*29)
+//     // cout << " tmp: " << tmp;
+//     // tmp *= tmp;
+//     // cout << " tmp: " << tmp;
+//     // auto f42 = Int("4513721078614786210022654658754022076207575792470901370842837631998555767764876163651334186529206088049982418198714538469250807179723842787735400581098036879598420878073788073478633526793353330401336902135069154012389883318957655774958078857324256712388820015707438180916154489315708470767711885060380524427604580826158560154020090008127121505888111464555809702150144"); // 2**(42*29)
+//     // cout << " f42: " << f42;
+//     // cout << "\ntmp.cmp_abs(f42) = " << tmp.cmp_abs(f42) << '\n';
+//     // auto diff = f42 - f42;
+//     // cout << diff;
+//     // cout << (a == diff) << (a < diff) << (a > diff);
+//     // cout << Int::pow(2,10000);
+//     // tmp = 2**(29*21) is right, whereas tmp * tmp get wrong
+//     // auto f = [](int base, int exponent) { cout << std::pow(base, exponent) << '\n'; };
+//     // f(2,10);
+//     // f(2,100000);
+//     // f(INT_MAX, INT_MAX);
+//     auto start = std::chrono::high_resolution_clock::now();
+//     auto tmp = Int::pow(11,1000000);
+//     // auto tmp = Int("2423285551989543969259886147306320615721694717012975552426444448158985017722789267546553034738712987127346362442309271495645764807314487385596126924659433020959638410571315406303196994043324038030803068668509323897700215957022383545283810557899591580902307500436706661372076856211818662627186819885605667216486349283517459646495626188985295134800963771933733229691796170211328");
+//     // cout << " tmp: " << tmp;
+//     // tmp *= tmp;
+//     cout << " tmp: " << tmp;
+//     auto end = std::chrono::high_resolution_clock::now();
+//     std::chrono::duration<double> diff = end-start;
+//     std::cout << diff.count() << " s\n";
+// }
 
 
 // how can I fix below code? (same error message if explicit instantiation line been commented out.)
