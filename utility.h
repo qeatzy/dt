@@ -87,8 +87,10 @@ void print(Iterator first, Iterator last, std::string description="", signed cha
     const bool wait_for_inspect = (sep == 'q');
     auto ending_mark = '\n';
     if (sep < 0) {
-        sep = ' ';
         if (sep < -1) ending_mark = ' ';
+        else if (sep == -2) ending_mark = 0;
+        else ending_mark = ' ';
+        sep = ' ';
     } else if (!(sep == 0 || sep == ' ' || sep == '\n' || sep == '\t')) {
         sep = ' ';
         auto length = std::distance(first, last);
@@ -102,7 +104,7 @@ void print(Iterator first, Iterator last, std::string description="", signed cha
             if (c == 'q') {
                 break;
             }
-        } else {
+        } else if (sep != 0) {
             std::cout << sep;
         }
     }
@@ -117,7 +119,7 @@ void print(const Container &vec, std::string description="", char sep=' ') {
 template <typename It>
 void print(It b, int n, std::string description="", char sep = ' ') {
     assert(n >= 0);
-    print(b, b + n, description, ' ');
+    print(b, b + n, description, sep);
 }
 
     // // example for print (with caveat.)
